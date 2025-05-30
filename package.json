@@ -1,0 +1,58 @@
+{
+	"name": "directus-extension-keycloak-user-management-operations",
+	"description": "User management in Keycloak via Directus.",
+	"icon": "extension",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-extension-operation"
+	],
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"directus:extension": {
+		"type": "operation",
+		"path": {
+			"app": "dist/app.js",
+			"api": "dist/api.js"
+		},
+		"source": {
+			"app": "src/app.ts",
+			"api": "src/api.ts"
+		},
+		"host": "^10.10.0",
+		"sandbox": {
+			"enabled": true,
+			"requestedScopes": {
+				"log": {},
+				"request": {
+					"methods": [
+						"POST",
+						"PUT",
+						"DELETE"
+					],
+					"urls": [
+						"https://*/admin/realms/*/users/*",
+						"https://*/admin/realms/*/users",
+						"https://*/realms/*/protocol/openid-connect/token"
+					]
+				},
+				"sleep": {}
+			}
+		}
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"link": "directus-extension link",
+		"validate": "directus-extension validate"
+	},
+	"devDependencies": {
+		"@directus/extensions-sdk": "13.1.1",
+		"@types/node": "^22.15.24",
+		"typescript": "^5.8.3",
+		"vue": "^3.5.16"
+	}
+}
