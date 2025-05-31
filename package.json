@@ -8,6 +8,10 @@
 		"directus-extension",
 		"directus-extension-operation"
 	],
+	"repository": {
+        "type": "git",
+        "url": "https://github.com/qadez11/keycloak-user-management-operations"
+    },
 	"type": "module",
 	"files": [
 		"dist"
@@ -22,7 +26,7 @@
 			"app": "src/app.ts",
 			"api": "src/api.ts"
 		},
-		"host": "^10.10.0",
+		"host": "^10.0.0 || ^11.0.0",
 		"sandbox": {
 			"enabled": true,
 			"requestedScopes": {
