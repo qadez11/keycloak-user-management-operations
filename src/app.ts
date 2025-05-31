@@ -89,9 +89,6 @@ export default defineOperationApp({
 						]
 					},
 				},
-				schema: {
-					default_value: "create-user",
-				},
 			},
 			{
 				field: 'user_id',
