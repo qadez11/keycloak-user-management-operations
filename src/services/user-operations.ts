@@ -1,3 +1,4 @@
+import { UnexpectedResponseError } from '@directus/errors';
 import { request } from 'directus:api';
 
 export async function createUser(
@@ -12,32 +13,33 @@ export async function createUser(
   lastName?: string,
 ): Promise<Object> {
   const url = `${keycloak_base_url}/admin/realms/${realm}/users`;
-  try {
-    const response = await request(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
-      },
-      body: {
-        "username": username,
-        "enabled": enabled,
-        "emailVerified": emailVerified,
-        "email": email,
-        "firstName": firstName,
-        "lastName": lastName
-      },
-    });
 
-    if (response.status === 201) {
-      return { "status": "ok" };
-    } else {
-      throw new Error(`Unexpected response status: ${response.status}`);
-    }
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw new Error('Failed to create user');
+  const body = Object.fromEntries(
+    Object.entries({
+      username,
+      enabled,
+      emailVerified,
+      email,
+      firstName,
+      lastName,
+    }).filter(([_, value]) => value != null)
+  );
+
+  const response = await request(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    },
+    body,
+  });
+
+  if (response.status === 201) {
+    return { "status": "ok" };
+  } else {
+    throw new UnexpectedResponseError();
   }
+
 }
 
 export async function deleteUser(
@@ -46,22 +48,55 @@ export async function deleteUser(
   accessToken: string,
   user_id: string,
 ): Promise<Object> {
-  const url = `${keycloak_base_url}/admin/realms/${realm}/users${user_id}`;
-  try {
-    const response = await request(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      },
-    });
+  const url = `${keycloak_base_url}/admin/realms/${realm}/users/${user_id}`;
 
-    if (response.status === 204) {
-      return { "status": "ok" };
-    } else {
-      throw new Error(`Unexpected response status: ${response.status}`);
-    }
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw new Error('Failed to create user');
+  const response = await request(url, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    },
+  });
+
+  if (response.status === 204) {
+    return { "status": "ok" };
+  } else {
+    throw new UnexpectedResponseError();
+  }
+}
+
+export async function updateUser(
+  keycloak_base_url: string,
+  realm: string,
+  accessToken: string,
+  user_id: string,
+  updates: {
+    enabled?: boolean,
+    emailVerified?: boolean,
+    username?: string,
+    email?: string,
+    firstName?: string,
+    lastName?: string,
+  }
+): Promise<Object> {
+  const url = `${keycloak_base_url}/admin/realms/${realm}/users/${user_id}`;
+
+  // Формируем объект с обновлениями, исключая null и undefined
+  const body = Object.fromEntries(
+    Object.entries(updates).filter(([_, value]) => value != null)
+  );
+
+  const response = await request(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${accessToken}`
+    },
+    body,
+  });
+
+  if (response.status === 204) {
+    return { "status": "ok" };
+  } else {
+    throw new UnexpectedResponseError();
   }
 }

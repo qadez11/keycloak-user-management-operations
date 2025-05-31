@@ -3,7 +3,7 @@
 import { defineOperationApi } from '@directus/extensions-sdk';
 
 import { getAccessToken } from './services/keycloak-service';
-import { createUser, deleteUser } from './services/user-operations';
+import { createUser, deleteUser, updateUser } from './services/user-operations';
 
 type Options = {
   keycloak_base_url: string;
@@ -53,9 +53,23 @@ export default defineOperationApi<Options>({
             last_name
           )
         case 'update-user':
-          console.log('Updating user...');
-          // Логика для обновления пользователя с использованием accessToken
-          break;
+          if (!user_id) {
+            throw new Error('user_id is required for update-user operation');
+          }
+          return updateUser(
+            keycloak_base_url,
+            realm,
+            accessToken,
+            user_id,
+            {
+              enabled,
+              emailVerified: email_verified,
+              username: user_name,
+              email,
+              firstName: first_name,
+              lastName: last_name,
+            }
+          )
 
         case 'delete-user':
           if (!user_id) {
