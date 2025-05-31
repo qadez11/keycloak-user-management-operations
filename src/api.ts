@@ -3,7 +3,7 @@
 import { defineOperationApi } from '@directus/extensions-sdk';
 
 import { getAccessToken } from './services/keycloak-service';
-import { createUser, deleteUser, updateUser } from './services/user-operations';
+import { UserOperationsService } from './services/user-operations';
 
 type Options = {
   keycloak_base_url: string;
@@ -38,13 +38,11 @@ export default defineOperationApi<Options>({
   }) => {
     try {
       const accessToken = await getAccessToken(keycloak_base_url, realm, client_id, client_secret);
+      const userService = new UserOperationsService(keycloak_base_url, realm, accessToken);
 
       switch (operation) {
         case 'create-user':
-          return createUser(
-            keycloak_base_url,
-            realm,
-            accessToken,
+          return userService.createUser(
             enabled,
             email_verified,
             user_name,
@@ -56,10 +54,7 @@ export default defineOperationApi<Options>({
           if (!user_id) {
             throw new Error('user_id is required for update-user operation');
           }
-          return updateUser(
-            keycloak_base_url,
-            realm,
-            accessToken,
+          return userService.updateUser(
             user_id,
             {
               enabled,
@@ -75,12 +70,7 @@ export default defineOperationApi<Options>({
           if (!user_id) {
             throw new Error('user_id is required for delete-user operation');
           }
-          return deleteUser(
-            keycloak_base_url,
-            realm,
-            accessToken,
-            user_id
-          )
+          return userService.deleteUser(user_id)
         default:
           throw new Error(`Unsupported operation: ${operation}`);
       }
