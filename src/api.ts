@@ -10,7 +10,7 @@ type Options = {
   client_id: string;
   client_secret: string;
   realm: string;
-  operation: 'create-user' | 'update-user' | 'delete-user';
+  operation: 'create-user' | 'update-user' | 'delete-user' | 'search-user';
   user_id?: string;
   user_name: string;
   first_name?: string;
@@ -71,6 +71,17 @@ export default defineOperationApi<Options>({
             throw new Error('user_id is required for delete-user operation');
           }
           return userService.deleteUser(user_id)
+
+        case 'search-user':
+ 
+          return userService.searchUser(
+            enabled,
+            email_verified,
+            user_name,
+            email,
+            first_name,
+            last_name
+          )
         default:
           throw new Error(`Unsupported operation: ${operation}`);
       }
@@ -80,3 +91,4 @@ export default defineOperationApi<Options>({
     }
   },
 });
+

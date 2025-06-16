@@ -2,7 +2,7 @@
 	"name": "directus-extension-keycloak-user-management-operations",
 	"description": "User management in Keycloak via Directus.",
 	"icon": "extension",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"keywords": [
 		"directus",
 		"directus-extension",
@@ -35,11 +35,13 @@
 					"methods": [
 						"POST",
 						"PUT",
-						"DELETE"
+						"DELETE",
+						"GET"
 					],
 					"urls": [
-						"https://*/admin/realms/*/users/*",
+						"https://*/admin/realms/*/users/",
 						"https://*/admin/realms/*/users",
+						"https://*/admin/realms/*/users*",
 						"https://*/realms/*/protocol/openid-connect/token"
 					]
 				},
