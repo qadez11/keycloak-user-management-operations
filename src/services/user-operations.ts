@@ -98,4 +98,41 @@ export class UserOperationsService {
       throw new UnexpectedResponseError();
     }
   }
+
+  async searchUser(
+    enabled?: boolean,
+    emailVerified?: boolean,
+    username?: string,
+    email?: string,
+    firstName?: string,
+    lastName?: string,
+  ): Promise<Object> {
+    const queryParams = Object.entries({
+      enabled,
+      emailVerified,
+      username,
+      email,
+      firstName,
+      lastName,
+    })
+      .filter(([_, value]) => value != null)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .join('&');
+
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users${queryParams ? `?${queryParams}` : ''}`;
+
+    const response = await request(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.accessToken}`
+      },
+    });
+
+    if (response.status === 200) {
+      return await response.data;
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
 }

@@ -85,6 +85,10 @@ export default defineOperationApp({
 							{
 								text: 'Delete User',
 								value: 'delete-user',
+							},
+							{
+								text: 'Search User',
+								value: 'search-user',
 							}
 						]
 					},
@@ -96,7 +100,7 @@ export default defineOperationApp({
 				type: 'string',
 				meta: {
 					required: context.operation === 'delete-user' || context.operation === 'update-user',
-					hidden: context.operation === 'create-user',
+					hidden: context.operation === 'create-user' || context.operation === 'search-user',
 					width: 'full',
 					interface: 'input',
 				},
