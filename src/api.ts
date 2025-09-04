@@ -10,7 +10,7 @@ type Options = {
   client_id: string;
   client_secret: string;
   realm: string;
-  operation: 'create-user' | 'update-user' | 'delete-user' | 'search-user';
+  operation: 'create-user' | 'update-user' | 'delete-user' | 'search-user' | 'reset-password';
   user_id?: string;
   user_name: string;
   first_name?: string;
@@ -18,6 +18,8 @@ type Options = {
   email?: string;
   email_verified: boolean;
   enabled: boolean;
+  password: string,
+  temporary: boolean
 };
 
 export default defineOperationApi<Options>({
@@ -35,6 +37,8 @@ export default defineOperationApi<Options>({
     email,
     email_verified,
     enabled,
+    password,
+    temporary
   }) => {
     try {
       const accessToken = await getAccessToken(keycloak_base_url, realm, client_id, client_secret);
@@ -73,7 +77,7 @@ export default defineOperationApi<Options>({
           return userService.deleteUser(user_id)
 
         case 'search-user':
- 
+
           return userService.searchUser(
             enabled,
             email_verified,
@@ -82,6 +86,18 @@ export default defineOperationApi<Options>({
             first_name,
             last_name
           )
+        case "reset-password":
+          if (!user_id) {
+            throw new Error("user_id is required for reset-password operation");
+          }
+          if (!password) {
+            throw new Error("password is required for reset-password operation");
+          }
+          return userService.resetPassword(
+            user_id,
+            temporary,
+            password
+          );
         default:
           throw new Error(`Unsupported operation: ${operation}`);
       }

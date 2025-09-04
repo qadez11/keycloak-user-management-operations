@@ -135,4 +135,24 @@ export class UserOperationsService {
       throw new UnexpectedResponseError();
     }
   }
+  async resetPassword(userId: string, temporary: boolean, password: string) {
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users/${userId}/reset-password`;
+    const response = await request(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.accessToken}`
+      },
+      body: {
+        "temporary": temporary,
+        "type": "password",
+        "value": password
+      }
+    });
+    if (response.status === 204) {
+      return { "status": "ok" };
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
 }
