@@ -2,16 +2,16 @@
 	"name": "directus-extension-keycloak-user-management-operations",
 	"description": "User management in Keycloak via Directus.",
 	"icon": "extension",
-	"version": "1.0.1",
+	"version": "1.0.3",
 	"keywords": [
 		"directus",
 		"directus-extension",
 		"directus-extension-operation"
 	],
 	"repository": {
-        "type": "git",
-        "url": "https://github.com/qadez11/keycloak-user-management-operations"
-    },
+		"type": "git",
+		"url": "https://github.com/qadez11/keycloak-user-management-operations"
+	},
 	"type": "module",
 	"files": [
 		"dist"
@@ -42,6 +42,8 @@
 						"https://*/admin/realms/*/users/",
 						"https://*/admin/realms/*/users",
 						"https://*/admin/realms/*/users*",
+						"https://*/admin/realms/*/users/*/reset-password",
+						"https://*/admin/realms/*/users/*/role-mappings/realm",
 						"https://*/realms/*/protocol/openid-connect/token"
 					]
 				},

@@ -1,5 +1,6 @@
-import { UnexpectedResponseError } from '@directus/errors';
 import { request } from 'directus:api';
+
+import { UnexpectedResponseError } from '@directus/errors';
 
 export class UserOperationsService {
   private keycloakBaseUrl: string;
@@ -129,6 +130,79 @@ export class UserOperationsService {
       },
     });
 
+    if (response.status === 200) {
+      return await response.data;
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
+  async resetPassword(userId: string, temporary: boolean, password: string) {
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users/${userId}/reset-password`;
+    const response = await request(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.accessToken}`
+      },
+      body: {
+        "temporary": temporary,
+        "type": "password",
+        "value": password
+      }
+    });
+    if (response.status === 204) {
+      return { "status": "ok" };
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
+  async assignRole(userId: string, role_id: string, role_name: string) {
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users/${userId}/role-mappings/realm`;
+    const response = await request(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.accessToken}`
+      },
+      body: [{
+        "id": role_id,
+        "name": role_name
+      }]
+    });
+    if (response.status === 204) {
+      return { "status": "ok" };
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
+  async unassignRole(userId: string, role_id: string, role_name: string) {
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users/${userId}/role-mappings/realm`;
+    const response = await request(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.accessToken}`
+      },
+      body: [{
+        "id": role_id,
+        "name": role_name
+      }]
+    });
+    if (response.status === 204) {
+      return { "status": "ok" };
+    } else {
+      throw new UnexpectedResponseError();
+    }
+  }
+  async getAssignRole(userId: string) {
+    const url = `${this.keycloakBaseUrl}/admin/realms/${this.realm}/users/${userId}/role-mappings/realm`;
+    const response = await request(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.accessToken}`
+      }
+    });
     if (response.status === 200) {
       return await response.data;
     } else {

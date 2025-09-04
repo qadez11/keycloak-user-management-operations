@@ -22,155 +22,217 @@ export default defineOperationApp({
 	options: (context) => {
 		return [
 			{
-				field: 'keycloak_base_url',
-				name: 'Keycloak Base URL',
-				type: 'string',
+				field: "keycloak_base_url",
+				name: "Keycloak Base URL",
+				type: "string",
 				meta: {
 					required: true,
-					width: 'full',
-					interface: 'input',
+					width: "full",
+					interface: "input",
 					note: "Example: https://idp.my.host.com"
-				},
+				}
 			},
 			{
-				field: 'client_id',
-				name: 'Client ID',
-				type: 'string',
+				field: "client_id",
+				name: "Client ID",
+				type: "string",
 				meta: {
 					required: true,
-					width: 'full',
-					interface: 'input',
+					width: "full",
+					interface: "input",
 					note: "The client identifier registered with the identity provider."
-				},
+				}
 			},
 			{
-				field: 'client_secret',
-				name: 'Client Secret',
-				type: 'string',
+				field: "client_secret",
+				name: "Client Secret",
+				type: "string",
 				meta: {
 					required: true,
-					width: 'full',
-					interface: 'input'
-				},
+					width: "full",
+					interface: "input"
+				}
 			},
 			{
-				field: 'realm',
-				name: 'Realm',
-				type: 'string',
+				field: "realm",
+				name: "Realm",
+				type: "string",
 				meta: {
 					required: true,
-					width: 'full',
-					interface: 'input',
+					width: "full",
+					interface: "input",
 					note: "Read more here: https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms"
-				},
+				}
 			},
 			{
-				field: 'operation',
-				name: 'Operation',
-				type: 'string',
+				field: "operation",
+				name: "Operation",
+				type: "string",
 				meta: {
 					required: true,
-					width: 'full',
-					interface: 'select-dropdown',
+					width: "full",
+					interface: "select-dropdown",
 					options: {
 						choices: [
 							{
-								text: 'Create User',
-								value: 'create-user',
+								text: "Create User",
+								value: "create-user"
 							},
 							{
-								text: 'Update User',
-								value: 'update-user',
+								text: "Update User",
+								value: "update-user"
 							},
 							{
-								text: 'Delete User',
-								value: 'delete-user',
+								text: "Delete User",
+								value: "delete-user"
 							},
 							{
-								text: 'Search User',
-								value: 'search-user',
-							}
+								text: "Search User",
+								value: "search-user"
+							},
+							{
+								text: "Reset password",
+								value: "reset-password"
+							},
+							{
+								text: "Assign role",
+								value: "assign-role"
+							},
+							{
+								text: "Unassign role",
+								value: "unassign-role"
+							},
+							{
+								text: "Get assign role",
+								value: "get-assign-role"
+							},
 						]
-					},
-				},
+					}
+				}
 			},
 			{
-				field: 'user_id',
-				name: 'User ID',
-				type: 'string',
+				field: "user_id",
+				name: "User ID",
+				type: "string",
 				meta: {
-					required: context.operation === 'delete-user' || context.operation === 'update-user',
-					hidden: context.operation === 'create-user' || context.operation === 'search-user',
-					width: 'full',
-					interface: 'input',
-				},
+					required: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					hidden: context.operation === "create-user" || context.operation === "search-user",
+					width: "full",
+					interface: "input"
+				}
 			},
 			{
-				field: 'user_name',
-				name: 'User Name',
-				type: 'string',
+				field: "user_name",
+				name: "User Name",
+				type: "string",
 				meta: {
-					required: context.operation === 'create-user',
-					hidden: context.operation === 'delete-user' || context.operation === 'update-user',
-					width: 'full',
-					interface: 'input',
-				},
+					required: context.operation === "create-user",
+					hidden: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "full",
+					interface: "input"
+				}
 			},
 			{
-				field: 'first_name',
-				name: 'First Name',
-				type: 'string',
+				field: "first_name",
+				name: "First Name",
+				type: "string",
 				meta: {
-					hidden: context.operation === 'delete-user',
-					width: 'full',
-					interface: 'input',
-				},
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "full",
+					interface: "input"
+				}
 			},
 			{
-				field: 'last_name',
-				name: 'Last Name',
-				type: 'string',
+				field: "last_name",
+				name: "Last Name",
+				type: "string",
 				meta: {
-					hidden: context.operation === 'delete-user',
-					width: 'full',
-					interface: 'input',
-				},
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "full",
+					interface: "input"
+				}
 			},
 			{
-				field: 'email',
-				name: 'Email',
-				type: 'string',
+				field: "email",
+				name: "Email",
+				type: "string",
 				meta: {
-					hidden: context.operation === 'delete-user',
-					width: 'half-left',
-					interface: 'input',
-				},
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "half-left",
+					interface: "input"
+				}
 			},
 			{
-				field: 'email_verified',
-				name: 'Email Verified',
-				type: 'boolean',
+				field: "email_verified",
+				name: "Email Verified",
+				type: "boolean",
 				meta: {
-					required: context.operation === 'create-user' || context.operation === 'update-user',
-					hidden: context.operation === 'delete-user',
-					width: 'half-right',
+					required: context.operation === "create-user" || context.operation === "update-user",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "half-right"
 				},
 				schema: {
-					default_value: false,
-				},
+					default_value: false
+				}
 			},
 			{
-				field: 'enabled',
-				name: 'Enabled',
-				type: 'boolean',
+				field: "enabled",
+				name: "Enabled",
+				type: "boolean",
 				meta: {
-					required: context.operation === 'create-user' || context.operation === 'update-user',
-					hidden: context.operation === 'delete-user',
-					width: 'full',
+					required: context.operation === "create-user" || context.operation === "update-user",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
+					width: "full"
 				},
 				schema: {
-					default_value: true,
+					default_value: true
+				}
+			},
+			{
+				field: "temporary",
+				name: "Temporary",
+				type: "boolean",
+				meta: {
+					required: context.operation === "reset-password",
+					hidden: context.operation !== "reset-password",
+					width: "full"
 				},
+				schema: {
+					default_value: true
+				}
+			},
+			{
+				field: "password",
+				name: "Password",
+				type: "string",
+				meta: {
+					required: context.operation === "reset-password",
+					hidden: context.operation !== "reset-password",
+					width: "full",
+					interface: "input"
+				}
+			},
+			{
+				field: "role_id",
+				name: "Role Id",
+				type: "string",
+				meta: {
+					required: context.operation === "assign-role" || context.operation === "unassign-role",
+					hidden: !(context.operation === "assign-role" || context.operation === "unassign-role"),
+					width: "full",
+					interface: "input"
+				}
+			},
+			{
+				field: "role_name",
+				name: "Role Name",
+				type: "string",
+				meta: {
+					required: context.operation === "assign-role" || context.operation === "unassign-role",
+					hidden: !(context.operation === "assign-role" || context.operation === "unassign-role"),
+					width: "full",
+					interface: "input"
+				}
 			},
 		]
 	}
