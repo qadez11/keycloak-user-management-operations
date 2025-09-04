@@ -93,7 +93,19 @@ export default defineOperationApp({
 							{
 								text: "Reset password",
 								value: "reset-password"
-							}
+							},
+							{
+								text: "Assign role",
+								value: "assign-role"
+							},
+							{
+								text: "Unassign role",
+								value: "unassign-role"
+							},
+							{
+								text: "Get assign role",
+								value: "get-assign-role"
+							},
 						]
 					}
 				}
@@ -103,7 +115,7 @@ export default defineOperationApp({
 				name: "User ID",
 				type: "string",
 				meta: {
-					required: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password",
+					required: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					hidden: context.operation === "create-user" || context.operation === "search-user",
 					width: "full",
 					interface: "input"
@@ -115,7 +127,7 @@ export default defineOperationApp({
 				type: "string",
 				meta: {
 					required: context.operation === "create-user",
-					hidden: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "update-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "full",
 					interface: "input"
 				}
@@ -125,7 +137,7 @@ export default defineOperationApp({
 				name: "First Name",
 				type: "string",
 				meta: {
-					hidden: context.operation === "delete-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "full",
 					interface: "input"
 				}
@@ -135,7 +147,7 @@ export default defineOperationApp({
 				name: "Last Name",
 				type: "string",
 				meta: {
-					hidden: context.operation === "delete-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "full",
 					interface: "input"
 				}
@@ -145,7 +157,7 @@ export default defineOperationApp({
 				name: "Email",
 				type: "string",
 				meta: {
-					hidden: context.operation === "delete-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "half-left",
 					interface: "input"
 				}
@@ -156,7 +168,7 @@ export default defineOperationApp({
 				type: "boolean",
 				meta: {
 					required: context.operation === "create-user" || context.operation === "update-user",
-					hidden: context.operation === "delete-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "half-right"
 				},
 				schema: {
@@ -169,7 +181,7 @@ export default defineOperationApp({
 				type: "boolean",
 				meta: {
 					required: context.operation === "create-user" || context.operation === "update-user",
-					hidden: context.operation === "delete-user" || context.operation === "reset-password",
+					hidden: context.operation === "delete-user" || context.operation === "reset-password" || context.operation === "assign-role" || context.operation === "unassign-role" || context.operation === "get-assign-role",
 					width: "full"
 				},
 				schema: {
@@ -199,7 +211,29 @@ export default defineOperationApp({
 					width: "full",
 					interface: "input"
 				}
-			}
+			},
+			{
+				field: "role_id",
+				name: "Role Id",
+				type: "string",
+				meta: {
+					required: context.operation === "assign-role" || context.operation === "unassign-role",
+					hidden: !(context.operation === "assign-role" || context.operation === "unassign-role"),
+					width: "full",
+					interface: "input"
+				}
+			},
+			{
+				field: "role_name",
+				name: "Role Name",
+				type: "string",
+				meta: {
+					required: context.operation === "assign-role" || context.operation === "unassign-role",
+					hidden: !(context.operation === "assign-role" || context.operation === "unassign-role"),
+					width: "full",
+					interface: "input"
+				}
+			},
 		]
 	}
 });

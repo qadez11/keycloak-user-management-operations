@@ -10,7 +10,7 @@ type Options = {
   client_id: string;
   client_secret: string;
   realm: string;
-  operation: 'create-user' | 'update-user' | 'delete-user' | 'search-user' | 'reset-password';
+  operation: 'create-user' | 'update-user' | 'delete-user' | 'search-user' | 'reset-password' | 'assign-role' | 'unassign-role' | 'get-assign-role';
   user_id?: string;
   user_name: string;
   first_name?: string;
@@ -19,7 +19,9 @@ type Options = {
   email_verified: boolean;
   enabled: boolean;
   password: string,
-  temporary: boolean
+  temporary: boolean,
+  role_name: string,
+  role_id: string
 };
 
 export default defineOperationApi<Options>({
@@ -38,7 +40,9 @@ export default defineOperationApi<Options>({
     email_verified,
     enabled,
     password,
-    temporary
+    temporary,
+    role_name,
+    role_id
   }) => {
     try {
       const accessToken = await getAccessToken(keycloak_base_url, realm, client_id, client_secret);
@@ -97,6 +101,31 @@ export default defineOperationApi<Options>({
             user_id,
             temporary,
             password
+          );
+        case "assign-role":
+          if (!user_id) {
+            throw new Error("user_id is required for reset-password operation");
+          }
+          return userService.assignRole(
+            user_id,
+            role_name,
+            role_id
+          );
+        case "unassign-role":
+          if (!user_id) {
+            throw new Error("user_id is required for reset-password operation");
+          }
+          return userService.unassignRole(
+            user_id,
+            role_name,
+            role_id
+          );
+        case "get-assign-role":
+          if (!user_id) {
+            throw new Error("user_id is required for reset-password operation");
+          }
+          return userService.getAssignRole(
+            user_id,
           );
         default:
           throw new Error(`Unsupported operation: ${operation}`);
