@@ -108,8 +108,8 @@ export default defineOperationApi<Options>({
           }
           return userService.assignRole(
             user_id,
-            role_name,
-            role_id
+            role_id,
+            role_name
           );
         case "unassign-role":
           if (!user_id) {
@@ -117,8 +117,8 @@ export default defineOperationApi<Options>({
           }
           return userService.unassignRole(
             user_id,
-            role_name,
-            role_id
+            role_id,
+            role_name
           );
         case "get-assign-role":
           if (!user_id) {
